@@ -2,14 +2,14 @@ class Versus{
   
   int[] xpos; //x position aisnake array pieces  
   int[] ypos; //y position aisnake array pieces
-  color c; // enemy color
-  int d;   //snake direction
-  int len; // snake's current length 
+  color c;     // enemy color
+  int d;       //snake direction
+  int len;     // snake's current length 
   boolean alive;
-  int x, y; // positions of versus snake's head
+  int x, y;    // positions of versus snake's head
   int sspeed;
 
-  Versus(int tempspeed){
+  Versus(){
     x = width/2;
     y = height/3;
     c = color(240,144,0); //(250,95,61)red or (67,181,30)green
@@ -18,12 +18,11 @@ class Versus{
     
     len = 2;
     d = 1;
-    sspeed = tempspeed;
-    move();
+    move(sspeed);
   
   }
   
-  void move(){
+  void move(int sspeed){
     switch(d){
       case 0:
         x = x + sspeed;
@@ -75,25 +74,57 @@ class Versus{
     
   }
   
-  /*
   
-  void goeat(){ // direct self towards egg  
-    println(foodX+ " " + foodY);
-    if ((foodY < y-5 || foodY < y+5) && d!=1){ 
-      d = 3; 
-      println("up");
-    } else if (foodX < x && d!=0){
-      d = 2; 
-      println("left");
-    } else if ((foodY > y-5 || foodY > y+5) && d!=3){
-      d = 1; 
-      println("down");
-    } else if (foodX > x && d!=2){
-      d = 0; 
-      println("right");
+  void avoid(){
+    boolean free = false;
+    int nowd = d;
+    int deadmeat = 0;
+    while(!free){
+    
+      //veer away from tail
+      switch(d){
+      case 0:
+        if(xpos[len-1] < width - 20){
+          if((xpos[len-1] +1 != 1) && (ypos[len-1] != 1)) free = true; 
+          else{
+            free = false; 
+            d = 1;
+          }
+        }
+        break;
+      case 1:
+        if(ypos[len-1] < height - 20){
+          if((xpos[len-1] != 1) && (ypos[len-1]+1 != 1)) free = true; 
+          else{
+            free = false; 
+            d = 2;
+          }
+        }
+        break;
+      case 2:
+        if(xpos[len-1] > 20){
+          if((xpos[len-1]-1 != 1) && (ypos[len-1] != 1)) free = true; 
+          else{
+            free = false; 
+            d = 3;
+          }
+        }
+        break;
+      case 3:
+        if(ypos[len-1] > 100){
+          if((xpos[len-1] != 1) && (ypos[len-1]-1 != 1)) free = true; 
+          else{
+            free = false; 
+            d = 0;
+          }
+        }
+        break;
+      }
+    if(++deadmeat > 7) break;
+    }
   }
     
-  }*/
+  
   
   void display(){
     // Here comes the part where the tail is created

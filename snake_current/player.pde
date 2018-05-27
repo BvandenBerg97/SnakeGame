@@ -51,6 +51,7 @@ class Snake {
     void move(){
       snakeX += speedX;     
       snakeY += speedY;
+      
       //Prohibit snake from touching walls
       if((snakeX > width-13)||(snakeX < 35)){
         snake.death();

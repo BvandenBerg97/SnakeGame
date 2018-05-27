@@ -5,7 +5,7 @@ that gets bigger every time you pick up food. Try to get the highest score, but 
 not run in to yourself. Have fun!*/
 
 /*TO DO: 
- - player collision
+ - player collision w/AI
  - ai own body collision
  - fix direction loop
 */
@@ -24,6 +24,7 @@ int y2;
 float foodX;            // x position of food
 float foodY;
 int groundsize;
+int sspeed;
 
 float distance;                    // distance of food and snake head
 float aidistance;              //distance food and ai
@@ -35,7 +36,7 @@ boolean menu,start;
 void setup(){
   size(800,600);           // setting the window size to 600 by 400 pixels
   snake = new Snake();     // initiating the functions from their respective classes
-  versus = new Versus (10);
+  versus = new Versus ();
   myscore = new Score();
   gameMenu = new Menu();
   //pix = new int[groundsize][groundsize];
@@ -48,6 +49,8 @@ void setup(){
 
   foodX = rand(20,width-20);
   foodY = rand(110,height-20);
+  
+  sspeed = 5;
   
   groundsize = 300;
  
@@ -67,11 +70,16 @@ void draw(){
       background(0);                     //black background color(128,0,156)
       snake.display();                   //calling all the functions from the classes
       snake.move();                      //displaying and moving the player model 
-      versus.move();
+      
+      versus.move(sspeed);
       versus.goeat();
       versus.display();
+      versus.avoid();
+      
       showfood(foodX,foodY);             //display food
+      
       snake.death();                     //setting losing state
+      
       myscore.displayP1();               //displaying score
       myscore.displayAI();
       myscore.gameName();
@@ -109,18 +117,18 @@ void draw(){
       rect(snake.snakeX,snake.snakeY,10,10,5);
       
       //SNAKE EATING
-      distance = dist(foodX,foodY,snake.snakeX-15,snake.snakeY);
+      distance = dist(foodX,foodY,snake.snakeX,snake.snakeY);
       aidistance = dist(versus.x, versus.y, foodX, foodY);
       
-      //if the head of the snakes collides with food, reset food and increase size. Margin of 20 pixels
-      if(distance < 20 ){
+      //if the head of the snake collides with food, reset food and increase size. Margin of 20 pixels
+      if(distance < 15 ){
         foodreset();
         snake.increaseSize();
       }
       
       //if ai snake gets food, reset food 
       //ADD PENALTY FOR PLAYER?
-      if(aidistance < 20){ 
+      if(aidistance < 10){ 
         foodreset();
         versus.increaseSize();
         println("ate");

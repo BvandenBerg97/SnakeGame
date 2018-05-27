@@ -14,8 +14,7 @@ Some ways we will implement this:</br>
 
 # When do we need to do it?
 -15th of May -> working prototype</br>
--22nd of May -> adaptive prototype</br>
--30th of May -> debug and improve</br>
+-30th of May -> adaptive prototype</br>
 (1 week buffer to revise)</br>
 
 # Who does it?
@@ -25,3 +24,16 @@ Some ways we will implement this:</br>
 - Ronja, Michiel & Sami:</br>
   -enemy</br>
   -implement changes</br>
+
+# Current tasks?
+- Dan:</br>
+  -distance function for risk measurement </br>
+
+- Michiel :</br>
+  -Game Over Menu</br>
+
+- The Brams :</br>
+  -AI speed change function</br>
+
+- Ronja & Sami :</br>
+  -Snake collision and self avoidance</br>
