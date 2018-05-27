@@ -53,12 +53,12 @@ class Snake {
       snakeY += speedY;
       
       //Prohibit snake from touching walls
-      if((snakeX > width-13)||(snakeX < 35)){
+      if((snakeX > width-25)||(snakeX < 25)){
         snake.death();
         speedX = 0;
       }  
       
-      if ((snakeY > height - 20)||(snakeY < 115)){
+      if ((snakeY > height - 35)||(snakeY < 100)){
         snake.death();
         speedY = 0;
       }
