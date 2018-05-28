@@ -14,6 +14,10 @@ class EndMenu{
     fill(255);
     textAlign(CENTER);
     text("Game Over",width/2,235);
+    textSize(23);
+    text("Congratulations,",width/2,330);
+    textSize(15);
+    text("you played yourself",width/2,360);
     
     //Go to Game button
     if ((mouseX > 235)&&(mouseX < 565) && (mouseY > 440) && (mouseY < 475)) {

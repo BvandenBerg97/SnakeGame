@@ -7,80 +7,93 @@ not run in to yourself. Have fun!*/
 /*TO DO: 
  - player collision w/AI
  - ai own body collision
- - AI death conditions  (ex when it accidently  goes off screen, make a "OOPS" Menu
+ - AI death conditions  (ex when it accidently  goes off screen
 */
+
 import processing.sound.*;   // import sound for background music
 
 Snake snake;                // declaring the classes
 Versus versus;
 Score myscore;
-Menu gameMenu;
-EndMenu endMenu;
+
+Menu gameMenu;              //declare start menu
+EndMenu endMenu;            //declare end menu
+ErrorMenu errorMenu;        //declare error menu
+
 SoundFile eating;
 SoundFile theme;
 
-int x1;
+int x1;                      //wall coordinates
 int x2;
 int y1;
 int y2;
 
-float foodX;            // x position of food
+float foodX;                  // position of food
 float foodY;
-int groundsize;
-int sspeed;
 
-float distance;                    // distance of food and snake head
+int groundsize;
+
+int sspeed;                    //speed of snake
+
+float distance;                // distance of food and snake head
 float aidistance;              //distance food and ai
 
-boolean menu,start, end;      //game booleans for menu, starting game and then for game over screen
+//game booleans for menu, starting game and then for game over screen and error screen
+boolean menu, start, end, error;
 
-//GAME SETUP
 
 void setup(){
+  //GAME SETUP
   size(800,600);           // setting the window size to 600 by 400 pixels
   snake = new Snake();     // initiating the functions from their respective classes
-  versus = new Versus ();
+  versus = new Versus ();   //create the ai overlord snake!
+  
   myscore = new Score();
+  
   gameMenu = new Menu();    //initiate menu
   endMenu = new EndMenu();  //initiate end menu
+  errorMenu = new ErrorMenu(); // initiate error menu
 
-  
-  menu = true;              //Menu is displayed at start
+  //SET BOOLEANS
+  menu = true;              //menu is displayed at start
   start = false;
   end = false;
+  error = false;
 
   frameRate(25);           /* capping the framerate to make the game not too hard and to retain the classic feel of Snake  */
 
+  //FOOD START POSITION
   foodX = rand(20,width-20);
   foodY = rand(110,height-20);
   
-  sspeed = 5;
+  sspeed = 10;            //ai snake speed
   
   groundsize = 300;
   
-  //sound files
+  //SOUND
   gameoverSound = new SoundFile(this, "gameover.wav");
   eating = new SoundFile(this, "eating.wav");
   SoundFile theme = new SoundFile(this, "theme2.wav");
   theme.loop();
- 
 }
 
 void draw(){
-  
-  //START MENU
-  //CAN THIS BE REMOVED
+  //DISPLAY MENUS//
+  //Start menu
   if(menu == true || (snake.death = true)){    
     gameMenu.display();
   }
-  
-  //GAME OVER MENU
+  //Game over menu
   if(end == true || (menu == false)) {
     endMenu.display();
   }
+  //Error menu
+  if(error == true ){
+    errorMenu.display();
+  }
   
-  //START OF GAME
   
+  //START OF GAME//
   if(start == true){
       background(0);                     //black background color(128,0,156)
       snake.display();                   //calling all the functions from the classes
@@ -93,6 +106,7 @@ void draw(){
       showfood(foodX,foodY);             //display food
       
       snake.death();                     //setting losing state
+      versus.death();
       
       myscore.displayP1();               //displaying score
       myscore.displayAI();
@@ -126,10 +140,6 @@ void draw(){
         y2 = y2 + 10;
       }
       
-      //eating debug white box
-      rectMode(CENTER);
-      rect(snake.snakeX,snake.snakeY,10,10,5);
-      
       //SNAKE EATING
       distance = dist(foodX,foodY,snake.snakeX,snake.snakeY);
       aidistance = dist(versus.x, versus.y, foodX, foodY);
@@ -160,12 +170,11 @@ void showfood(float tempx, float tempy){// display food
 }
   
 void foodreset(){                      //reset function when food is eaten
-    foodX = (rand(4,78)*10);
+    foodX = (rand(4,78)*10);           //food locations all multiples of 10 so that AI has easier time catching them
     foodY = (rand(12,57)*10);
 }   
 
 //MOVEMENT CONTROLS
-
 void keyPressed() { //snake controls the speed and directions of the snake with arrow keys, the if statement checks the pos of snake so it can't move into itself                                             
   if(keyCode == UP) {  if(snake.ypos[1] != snake.ypos[0]-10){snake.speedY = -10; snake.speedX = 0;}}      //snake cant move into the first 10 pieces of the tail directly
   if(keyCode == DOWN) {  if(snake.ypos[1] != snake.ypos[0]+10){snake.speedY = 10; snake.speedX = 0;}}
@@ -173,22 +182,28 @@ void keyPressed() { //snake controls the speed and directions of the snake with 
   if(keyCode == RIGHT) { if(snake.xpos[1] != snake.xpos[0]+10){snake.speedX = 10; snake.speedY = 0;}}
 }
 
-//MENU CONTROLS 
+//MENU BUTTON CONTROLS 
 void mousePressed() {
+  //START BUTTON
   if ((menu == true) && (mouseX > 235) && (mouseX < 565) && (mouseY > 440) && (mouseY < 475)) {
-    start = true;  //START
+    start = true;  
     menu = false;
   }
-
-  if ((start == true) && (mouseButton == RIGHT)) { //restart
+  //restart while game is playing
+  if ((start == true) && (mouseButton == RIGHT)) { 
     menu = true;
     start = false;
     snake.snakeSize = 1;
-
   }
+  //START NEW GAME BUTTON
   if ((end == true) && (mouseX > 235) && (mouseX < 565) && (mouseY > 440) && (mouseY < 475)) {
-    start = true;  //START NEW GAME
+    start = true;  
     end = false;
+  }
+  //ERROR RESTART BUTTON
+  if ((error == true) && (mouseX > 235) && (mouseX < 565) && (mouseY > 440) && (mouseY < 475)) {
+    start = true;  
+    error = false;
   }
 }
 

@@ -5,12 +5,12 @@ class Versus{
   color c;     // enemy color
   int d;       //snake direction
   int len;     // snake's current length 
-  boolean alive;
+  boolean alive, dead;
   int x, y;    // positions of versus snake's head
   int sspeed;
 
   Versus(){
-    x = width/2;
+    x = width/2;          //Snake starting position
     y = height/3;
     c = color(240,144,0); //(250,95,61)red or (67,181,30)green
     xpos = new int[150];
@@ -19,6 +19,7 @@ class Versus{
     len = 2;
     d = 1;
     move(sspeed);
+    dead = false;
   
   }
   
@@ -90,9 +91,34 @@ class Versus{
     for (int i = 0; i < len; i ++) {
       rect(xpos[i], ypos[i], 20, 20,5);
     }
+    
+    //Prohibit snake from touching walls
+    if((x > width+25)||(x < -25)){
+      versus.death();
+      sspeed = 0;
+      x = width/2; //reset snake starting position           
+    }  
+    
+    if ((y > height + 35)||(y < 0)){
+      versus.death();
+      sspeed = 0;
+      y = height/3; //reset snake starting position
+    }
   }
 
   void increaseSize(){ // if increaseSize is called the size of the snake is increased
       len++;    
+  }
+  
+  void death(){
+    for(int i = 1; i < len; i++){            // when the snake hits it's own body the game resets.
+       if(x == xpos[i] && y== ypos[i]){   // set size back to 1 when the head hits the body
+         len = 1;
+         dead = true;
+         error = true;
+         end = false;
+         start = false;  
+      }
+    }  
   }
 }

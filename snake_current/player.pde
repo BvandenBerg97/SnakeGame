@@ -49,6 +49,11 @@ class Snake {
         xpos[i] = xpos[i-1];
         ypos[i] = ypos[i-1];
       }
+      
+      //eating debug white box
+      fill(255);
+      rect(snakeX-4,snakeY,6,6,5);
+      rect(snakeX+4,snakeY,6,6,5);
     } 
     
     void move(){
@@ -82,6 +87,7 @@ class Snake {
          death = true;
          end = true;
          start = false;
+         error = false;
        gameOver();
       }
     }   
