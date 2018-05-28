@@ -138,6 +138,7 @@ void draw(){
       if(distance < 15 ){
         foodreset();
         snake.increaseSize();
+        eating.play();
       }
       
       //if ai snake gets food, reset food 
@@ -146,6 +147,7 @@ void draw(){
         foodreset();
         versus.increaseSize();
         println("ate");
+        eating.play();
       }
    }
 }
