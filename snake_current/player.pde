@@ -1,3 +1,6 @@
+import processing.sound.*;
+SoundFile gameoverSound;
+
 class Snake {
   // data of the snake class
   int[] xpos; //x position snake array pieces  
@@ -75,8 +78,15 @@ class Snake {
     for(int i = 1; i < snakeSize; i++){            // when the snake hits it's own body the game resets.
        if(snakeX == xpos[i] && snakeY== ypos[i]){   // set size back to 1 when the head hits the body
          snakeSize = 1;
+         versus.len = 1;
          death = true;
+         end = true;
+         start = false;
+       gameOver();
       }
     }   
   }
+  void gameOver() { //RESET SCORE AND SOUND
+    gameoverSound.play();
+  } 
 }

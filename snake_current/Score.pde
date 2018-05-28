@@ -4,6 +4,7 @@ class Score{// a class to control the Score representation
   int gameTextSize;
   PFont gamefont;
   color c;
+  int score = 0;
   
   Score(){                       // class constructor
     scoreTextSize = 14;          // setting text size to 24 to display score
@@ -36,5 +37,5 @@ class Score{// a class to control the Score representation
       text("Snake",width/2 - 156,46);    //display the text under eachother to improve visibility
       text("Game",width/2 + 33,46);
     }
-    
+
 }

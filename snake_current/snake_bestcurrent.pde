@@ -7,14 +7,17 @@ not run in to yourself. Have fun!*/
 /*TO DO: 
  - player collision w/AI
  - ai own body collision
- - fix direction loop
+ - AI death conditions  (ex when it accidently  goes off screen, make a "OOPS" Menu
 */
+import processing.sound.*;   // import sound for background music
 
 Snake snake;                // declaring the classes
 Versus versus;
 Score myscore;
 Menu gameMenu;
-Menu endMenu;
+EndMenu endMenu;
+SoundFile eating;
+SoundFile theme;
 
 int x1;
 int x2;
@@ -29,7 +32,7 @@ int sspeed;
 float distance;                    // distance of food and snake head
 float aidistance;              //distance food and ai
 
-boolean menu,start;
+boolean menu,start, end;      //game booleans for menu, starting game and then for game over screen
 
 //GAME SETUP
 
@@ -38,12 +41,13 @@ void setup(){
   snake = new Snake();     // initiating the functions from their respective classes
   versus = new Versus ();
   myscore = new Score();
-  gameMenu = new Menu();
-  //pix = new int[groundsize][groundsize];
-  //endMenu = new Menu ();
+  gameMenu = new Menu();    //initiate menu
+  endMenu = new EndMenu();  //initiate end menu
+
   
-  menu = true;
+  menu = true;              //Menu is displayed at start
   start = false;
+  end = false;
 
   frameRate(25);           /* capping the framerate to make the game not too hard and to retain the classic feel of Snake  */
 
@@ -53,15 +57,26 @@ void setup(){
   sspeed = 5;
   
   groundsize = 300;
+  
+  //sound files
+  gameoverSound = new SoundFile(this, "gameover.wav");
+  eating = new SoundFile(this, "eating.wav");
+  SoundFile theme = new SoundFile(this, "theme2.wav");
+  theme.loop();
  
 }
 
 void draw(){
   
   //START MENU
-  
-  if(menu == true || (snake.snakeSize == 15)||(snake.death = true)){    
+  //CAN THIS BE REMOVED
+  if(menu == true || (snake.death = true)){    
     gameMenu.display();
+  }
+  
+  //GAME OVER MENU
+  if(end == true || (menu == false)) {
+    endMenu.display();
   }
   
   //START OF GAME
@@ -74,7 +89,6 @@ void draw(){
       versus.move(sspeed);
       versus.goeat();
       versus.display();
-      versus.avoid();
       
       showfood(foodX,foodY);             //display food
       
@@ -157,19 +171,22 @@ void keyPressed() { //snake controls the speed and directions of the snake with 
   if(keyCode == RIGHT) { if(snake.xpos[1] != snake.xpos[0]+10){snake.speedX = 10; snake.speedY = 0;}}
 }
 
-//MENU
-
+//MENU CONTROLS 
 void mousePressed() {
   if ((menu == true) && (mouseX > 235) && (mouseX < 565) && (mouseY > 440) && (mouseY < 475)) {
     start = true;  //START
     menu = false;
   }
 
-  if ((start == true) && (mouseButton == RIGHT)) {
+  if ((start == true) && (mouseButton == RIGHT)) { //restart
     menu = true;
     start = false;
     snake.snakeSize = 1;
 
+  }
+  if ((end == true) && (mouseX > 235) && (mouseX < 565) && (mouseY > 440) && (mouseY < 475)) {
+    start = true;  //START NEW GAME
+    end = false;
   }
 }
 

@@ -73,59 +73,7 @@ class Versus{
     getnewY();
     
   }
-  
-  
-  void avoid(){
-    boolean free = false;
-    int nowd = d;
-    int deadmeat = 0;
-    while(!free){
-    
-      //veer away from tail
-      switch(d){
-      case 0:
-        if(xpos[len-1] < width - 20){
-          if((xpos[len-1] +1 != 1) && (ypos[len-1] != 1)) free = true; 
-          else{
-            free = false; 
-            d = 1;
-          }
-        }
-        break;
-      case 1:
-        if(ypos[len-1] < height - 20){
-          if((xpos[len-1] != 1) && (ypos[len-1]+1 != 1)) free = true; 
-          else{
-            free = false; 
-            d = 2;
-          }
-        }
-        break;
-      case 2:
-        if(xpos[len-1] > 20){
-          if((xpos[len-1]-1 != 1) && (ypos[len-1] != 1)) free = true; 
-          else{
-            free = false; 
-            d = 3;
-          }
-        }
-        break;
-      case 3:
-        if(ypos[len-1] > 100){
-          if((xpos[len-1] != 1) && (ypos[len-1]-1 != 1)) free = true; 
-          else{
-            free = false; 
-            d = 0;
-          }
-        }
-        break;
-      }
-    if(++deadmeat > 7) break;
-    }
-  }
-    
-  
-  
+ 
   void display(){
     // Here comes the part where the tail is created
     // Shift the values to the right
