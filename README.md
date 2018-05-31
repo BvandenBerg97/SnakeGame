@@ -3,20 +3,11 @@ A simple snake game made in processing for a school assignment.</br>
 The main feature of the game will be that the difficulty changes depending on the performance of the player.</br>
 
 # Current tasks?
-- Dan:</br>
-  -distance function for risk measurement (risk score increase while player close to ai) </br>
-  -variable/function for performance (call it that) (aka equals snakeSize*100 for player and len*100 for AI) this can then be used to change difficulty</br>
-
-- The Brams :</br>
-  -AI speed change function</br>
-  -HELP OTHER TEAM WE HAVE TOO MUCH ON OUR PLATE</br>
+  -distance function for risk measurement (risk score increase while player close to ai) 
   -implement lives structure for player, so that instead of immediately dying, player loses length and lives</br>
-
-- Michiel, Ronja & Sami :</br>
-  -Self avoidance</br>
-  -Inter-snake death!</br>
   -implement lives structure for enemy</br>
-  -implement risky movements</br>
+  -Inter-snake death!</br>
+  -(implement risky movements)</br>
 
 # Features
 Some ways we will implement this:</br>

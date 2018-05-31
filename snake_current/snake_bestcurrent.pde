@@ -5,9 +5,9 @@ that gets bigger every time you pick up food. Try to get the highest score, but 
 not run in to yourself. Have fun!*/
 
 /*TO DO: 
- - player collision w/AI
- - ai own body collision
- - AI death conditions  (ex when it accidently  goes off screen
+ - Player collision w/AI -- > lose life
+ - Lives
+ - Power ups
 */
 
 import processing.sound.*;   // import sound for background music
@@ -32,9 +32,6 @@ float foodX;                  // position of food
 float foodY;
 
 int groundsize;
-
-int sspeed;                    //speed of snake
-int vSpeed;
 
 float distance;                // distance of food and snake head
 float aidistance;              //distance food and ai
@@ -61,14 +58,11 @@ void setup(){
   end = false;
   error = false;
 
-  frameRate(25);           /* capping the framerate to make the game not too hard and to retain the classic feel of Snake  */
+  frameRate(10);           /* capping the framerate to make the game not too hard and to retain the classic feel of Snake  */
 
-  //FOOD START POSITION
+  //FOOD STARTING POSITION
   foodX = rand(20,width/2);
-  foodY = height/3;
-  
-  //sspeed = 5;            
-  //vSpeed = 5;          //ai snake speed
+  foodY = height/2;
   
   groundsize = 300;
   
@@ -106,7 +100,7 @@ void draw(){
       versus.display();
       
       snake.death();                     //setting losing state
-      //versus.death();
+      versus.death();
       
       showfood(foodX,foodY);             //display food
 
@@ -147,7 +141,7 @@ void draw(){
       aidistance = dist(versus.x, versus.y, foodX, foodY);
       
       //if the head of the snake collides with food, reset food and increase size. Margin of 20 pixels
-      if(distance < 15 ){
+      if(distance < 15 ){ 
         foodreset();
         snake.increaseSize();
         eating.play();
@@ -178,10 +172,10 @@ void foodreset(){                      //reset function when food is eaten
 
 //MOVEMENT CONTROLS
 void keyPressed() { //snake controls the speed and directions of the snake with arrow keys, the if statement checks the pos of snake so it can't move into itself                                             
-  if(keyCode == UP) {  if(snake.ypos[1] != snake.ypos[0]-10){snake.speedY = -10; snake.speedX = 0;}}      //snake cant move into the first 10 pieces of the tail directly
-  if(keyCode == DOWN) {  if(snake.ypos[1] != snake.ypos[0]+10){snake.speedY = 10; snake.speedX = 0;}}
-  if(keyCode == LEFT) { if(snake.xpos[1] != snake.xpos[0]-10){snake.speedX = -10; snake.speedY = 0;}}
-  if(keyCode == RIGHT) { if(snake.xpos[1] != snake.xpos[0]+10){snake.speedX = 10; snake.speedY = 0;}}
+  if(keyCode == UP) {  if(snake.ypos[1] != snake.ypos[0]-10){snake.speedY = -15; snake.speedX = 0;}}      //snake cant move into the first 10 pieces of the tail directly
+  if(keyCode == DOWN) {  if(snake.ypos[1] != snake.ypos[0]+10){snake.speedY = 15; snake.speedX = 0;}}
+  if(keyCode == LEFT) { if(snake.xpos[1] != snake.xpos[0]-10){snake.speedX = -15; snake.speedY = 0;}}
+  if(keyCode == RIGHT) { if(snake.xpos[1] != snake.xpos[0]+10){snake.speedX = 15; snake.speedY = 0;}}
 }
 
 //MENU BUTTON CONTROLS 

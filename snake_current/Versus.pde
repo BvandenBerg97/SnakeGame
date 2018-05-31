@@ -5,23 +5,25 @@ class Versus{
   color c;     // enemy color
   int d;       //snake direction
   int len;     // snake's current length 
-  boolean alive, dead, avoid;
+  boolean alive, dead, tooclose;
   int x, y;    // positions of versus snake's head
   int futx, futy; //anticipated positions of snake's head
   int sspeed;
+  int previousMove = -1;
 
   Versus(){
     x = width/2;          //Snake starting position
     y = height/3;
-    c = color(240,144,0); //(250,95,61)red or (67,181,30)green
+    c = color(191,1,232); //(250,95,61)red or (67,181,30)green or purple 128,0,156 or orange (240,144,0)
     xpos = new int[150];
     ypos = new int[150];
     
-    len = 2;
+    len = 2;              // ALWAYS NEEDS TO BE 2 BECAUSE OTHERWISE IT GETS THE WEIRDEST BUGS
     d = 1;
     move();
     dead = false;
-    avoid = false;
+    tooclose = false;
+    sspeed = 10;
   
   }
   
@@ -54,19 +56,40 @@ class Versus{
       sspeed = 0;
       y = height/3; //reset snake starting position NOT WORKING 
     }
-    
-
   }
   
-  void difficulty(){ // change speed of snake depending on player performance
-    if (len <= snake.snakeSize){
-      sspeed = 10;
-    } else {
-      sspeed = 5;
-    }
+  boolean crash(int d){ // WORK IN PROGRESS, DISREGARDS FOR NOW
+      switch(d){
+        case 0: 
+          futx = x + sspeed ;
+          futy = y + 10;
+        case 1:
+          futx = x - 5;
+          futy = y + sspeed;
+        case 2:
+          futx = x - sspeed;
+          futy = y + 10;
+        case 3:
+          futx = x - 5;
+          futy = y - sspeed;
+      } 
+      //println("FUT  "+ futx + " . "+ futy);
+      //println(len);
+      //println(d);
+      for(int i = 1; i < len; i ++){
+        //println("BODY   "+xpos[i] + " . "+ ypos[i]);
+     
+        if(xpos[i] == futx && ypos[i] == futy){
+          //println("im gonna crash");
+          return true;
+        }
+      }
+      println("============");
+     return false;
   }
   
-  void move(){
+  void move(){    //AI snake movement
+    tooclose = false;
     difficulty();
     switch(d){
       case 0:
@@ -80,100 +103,108 @@ class Versus{
         break;      
       case 3:
         y = y - sspeed;
-        break;
+        break;}
+        
+    for (int i = 0; i < snake.snakeSize; i ++) {   // print when AI gets too close to player, probably not best way to do stuff though
+      if (dist(x,y,snake.xpos[i],snake.ypos[i]) < 10){
+        tooclose = true;
+        println("too close");
+      } 
     }
-    for (int i = 0; i < snake.snakeSize; i ++) {
-      if (dist(x,y,snake.xpos[i],snake.ypos[i]) < 20){
-        avoid = true;
-      }
-    }
-  }
-  
-  void getnewY(){
-    //check for which direction it should go on X, right or left?
-    if(x > foodX) goLeft();
-    if(x < foodX) goRight();
-
-    /*if(x > foodX){
-      if(d!=2) goLeft();
-      else getnewX();
-      
-    }
-    if(x < foodX){ 
-      if(d!=0) goRight();
-      else getnewX();
-    }*/
-    
-  }
-  
-  void getnewX(){
-    //check for which direction it should go on Y, up or down?
-    if(y > foodY) goUp();
-
-    if(y < foodY) goDown();
-    
-    /*
-    if(y > foodY){ 
-      if(d!=1) goUp();
-      else getnewY();
-    }
-    if(y < foodY){  
-      if(d!=3) goDown();
-      else getnewY();
-    
-    }
-    */
   }
   
   void goLeft(){
     d = 2;
+    crash(d);
   }
-  
   void goDown(){
     d = 1;
+    crash(d);
   }
-  
   void goRight(){
     d = 0;
+    crash(d);
   }
-  
   void goUp(){
     d = 3;
+    crash(d);
   }
   
-  void goeat(){
-    
-    getnewX();
-    getnewY();
-    if(avoid == true){
-      avoid();}/*
+  int getnewX(){
+    println(previousMove);
+    //check for which direction it should go on X, right or left?
+    if(x > foodX + 3){ 
+        if(previousMove != 0){ // As long as you're not moving in the opposite direction, go this way
+          goLeft();
+          previousMove = 2;
+        } else {
+          goUp();
+          previousMove = 3;
+        }
+      return 2;}
       
-     else {
-      if(foodY == y){
-        getnewY();        
-      }
-    getnewX();*/
+    if(x < foodX - 3){ 
+      if(previousMove != 2){ // As long as you're not moving in the opposite direction, go this way
+          goRight();
+          previousMove = 0;
+        } else {
+          goUp();
+          previousMove = 3;
+        }
+      return 0;}
+      
+     return -1; 
   }
   
-  void avoid(){
-    if(d == 0 || d == 2) {
+  int getnewY(){
+    //check for which direction it should go on Y, up or down?
+    if(y > foodY + 3){ 
+      if(previousMove != 1){ // As long as you're not moving in the opposite direction, go this way
+          goUp();
+          previousMove = 3;
+        } else {
+          goLeft();
+          previousMove = 2;
+        }
+      return 3; // return that you're going right
+    }
+      
+    if(y < foodY - 3){ 
+      if(previousMove !=3){ // As long as you're not moving in the opposite direction, go this way
+        goDown();
+        previousMove = 1;
+      } else {
+          goLeft();
+          previousMove = 2;
+        return 1; // return that you're going left
+        }
+    }
+    return -1; // in case neither are satisfied
+  }
+
+  void goeat(){
+    int newx = getnewX();
+    if(newx == -1){
       getnewY();
     }
-    if(d == 1 || d == 3){
-      getnewX();
-    }
-    println("turn!"); 
-    avoid = false;
   }
 
   void increaseSize(){ // if increaseSize is called the size of the snake is increased
       len++;    
   }
   
+  void difficulty(){ // change speed of snake depending on player performance
+    if (len <= snake.snakeSize){
+      sspeed = 17;
+    } else {
+      sspeed = 10;
+    }
+  }
+  
   void death(){
     for(int i = 1; i < len; i++){            // when the snake hits it's own body the game resets.
        if(x == xpos[i]  && y== ypos[i]){   // set size back to 1 when the head hits the body
-         len = 1;
+         len = 2;
          snake.snakeSize = 1;
          dead = true;
          error = true;

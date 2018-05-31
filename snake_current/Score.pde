@@ -27,12 +27,12 @@ class Score{// a class to control the Score representation
     }
     
     void gameName(){            // function that displays game name  
-      fill(232);                // make the text colour light grey
+      fill(128,0,156);                // make the text colour light grey
       textAlign(CORNER);  
       textFont(gamefont);
       text("Snake",width/2 - 157,45);    //display the text under eachother to improve visibility
       text("Game",width/2 + 32,45);
-      fill(128,0,156);                   // blue(66,109,199) or purple(128,0,156)
+      fill(255);                   // blue(66,109,199) or purple(128,0,156)
       textFont(gamefont);
       text("Snake",width/2 - 156,46);    //display the text under eachother to improve visibility
       text("Game",width/2 + 33,46);
