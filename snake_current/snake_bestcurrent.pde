@@ -34,6 +34,7 @@ float foodY;
 int groundsize;
 
 int sspeed;                    //speed of snake
+int vSpeed;
 
 float distance;                // distance of food and snake head
 float aidistance;              //distance food and ai
@@ -63,10 +64,11 @@ void setup(){
   frameRate(25);           /* capping the framerate to make the game not too hard and to retain the classic feel of Snake  */
 
   //FOOD START POSITION
-  foodX = rand(20,width-20);
-  foodY = rand(110,height-20);
+  foodX = rand(20,width/2);
+  foodY = height/3;
   
-  sspeed = 10;            //ai snake speed
+  //sspeed = 5;            
+  //vSpeed = 5;          //ai snake speed
   
   groundsize = 300;
   
@@ -99,15 +101,15 @@ void draw(){
       snake.display();                   //calling all the functions from the classes
       snake.move();                      //displaying and moving the player model 
       
-      versus.move(sspeed);
+      versus.move();
       versus.goeat();
       versus.display();
       
-      showfood(foodX,foodY);             //display food
-      
       snake.death();                     //setting losing state
-      versus.death();
+      //versus.death();
       
+      showfood(foodX,foodY);             //display food
+
       myscore.displayP1();               //displaying score
       myscore.displayAI();
       myscore.gameName();
