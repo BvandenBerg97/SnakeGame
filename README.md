@@ -8,6 +8,7 @@ The main feature of the game will be that the difficulty changes depending on th
   -implement lives structure for enemy</br>
   -Inter-snake death!</br>
   -(implement risky movements)</br>
+  - additional difficulty: add multiple AI snakes</br>
 
 # Features
 Some ways we will implement this:</br>

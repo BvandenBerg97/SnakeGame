@@ -28,6 +28,7 @@ class Versus{
   }
   
   void display(){
+    
     // Here comes the part where the tail is created
     // Shift the values to the right
     for (int i = len-1; i > 0; i--) {
@@ -38,11 +39,20 @@ class Versus{
     // Add the new values to the beginning of the array
     xpos[0] = x;
     ypos[0] = y;
-    
+
     fill(c);  // determine color of enemy (67,181,30) dark green
     for (int i = 0; i < len; i ++) {
       rect(xpos[i], ypos[i], 20, 20,5);
     }
+    
+    //creating snake eyes
+    fill(255);
+    arc(x+4,y,6,6, radians(-45), PI, CHORD);
+    arc(x-5,y,6,6, 0, PI+QUARTER_PI, CHORD);
+    fill(255,0,0);
+    ellipse(x+4,y+1,3,3);
+    ellipse(x-5,y+1,3,3);
+
     
     //Prohibit snake from touching walls
     if((x > width+25)||(x < -25)){
@@ -58,7 +68,7 @@ class Versus{
     }
   }
   
-  boolean crash(int d){ // WORK IN PROGRESS, DISREGARDS FOR NOW
+  /*boolean crash(int d){ // WORK IN PROGRESS, DISREGARD FOR NOW
       switch(d){
         case 0: 
           futx = x + sspeed ;
@@ -86,7 +96,7 @@ class Versus{
       }
       println("============");
      return false;
-  }
+  }*/
   
   void move(){    //AI snake movement
     tooclose = false;
@@ -115,25 +125,25 @@ class Versus{
   
   void goLeft(){
     d = 2;
-    crash(d);
+    //crash(d);
   }
   void goDown(){
     d = 1;
-    crash(d);
+    //crash(d);
   }
   void goRight(){
     d = 0;
-    crash(d);
+    //crash(d);
   }
   void goUp(){
     d = 3;
-    crash(d);
+    //crash(d);
   }
   
   int getnewX(){
     println(previousMove);
     //check for which direction it should go on X, right or left?
-    if(x > foodX + 3){ 
+    if(x > foodX + 5){ 
         if(previousMove != 0){ // As long as you're not moving in the opposite direction, go this way
           goLeft();
           previousMove = 2;
@@ -143,7 +153,7 @@ class Versus{
         }
       return 2;}
       
-    if(x < foodX - 3){ 
+    if(x < foodX - 5){ 
       if(previousMove != 2){ // As long as you're not moving in the opposite direction, go this way
           goRight();
           previousMove = 0;
@@ -158,7 +168,7 @@ class Versus{
   
   int getnewY(){
     //check for which direction it should go on Y, up or down?
-    if(y > foodY + 3){ 
+    if(y > foodY + 5){ 
       if(previousMove != 1){ // As long as you're not moving in the opposite direction, go this way
           goUp();
           previousMove = 3;
@@ -169,7 +179,7 @@ class Versus{
       return 3; // return that you're going right
     }
       
-    if(y < foodY - 3){ 
+    if(y < foodY - 5){ 
       if(previousMove !=3){ // As long as you're not moving in the opposite direction, go this way
         goDown();
         previousMove = 1;
@@ -195,7 +205,7 @@ class Versus{
   
   void difficulty(){ // change speed of snake depending on player performance
     if (len <= snake.snakeSize){
-      sspeed = 17;
+      sspeed = 15;
     } else {
       sspeed = 10;
     }

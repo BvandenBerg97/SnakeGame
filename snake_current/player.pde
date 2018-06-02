@@ -34,7 +34,7 @@ class Snake {
    c = color(135,232,1); // green colour for the snake model pale green(189,251,87) or neon light green(135,232,1)
    
    snakeSize = 1;        // snake starts at the size of 1 block
-    }
+  }
     
    //functions
    //appearance of snake model
@@ -50,10 +50,13 @@ class Snake {
         ypos[i] = ypos[i-1];
       }
       
-      //eating debug white box
+      //snake eyes
       fill(255);
       rect(snakeX-4,snakeY,6,6,5);
       rect(snakeX+4,snakeY,6,6,5);
+      fill(0,150,150);
+      ellipse(snakeX+4,snakeY, 4,4);
+      ellipse(snakeX-5,snakeY, 4,4);
     } 
     
     void move(){

@@ -28,6 +28,8 @@ int x2;
 int y1;
 int y2;
 
+int playerspeed;            //determine how fast player can move
+
 float foodX;                  // position of food
 float foodY;
 
@@ -63,6 +65,8 @@ void setup(){
   //FOOD STARTING POSITION
   foodX = rand(20,width/2);
   foodY = height/2;
+  
+  playerspeed = 15;
   
   groundsize = 300;
   
@@ -172,10 +176,10 @@ void foodreset(){                      //reset function when food is eaten
 
 //MOVEMENT CONTROLS
 void keyPressed() { //snake controls the speed and directions of the snake with arrow keys, the if statement checks the pos of snake so it can't move into itself                                             
-  if(keyCode == UP) {  if(snake.ypos[1] != snake.ypos[0]-10){snake.speedY = -15; snake.speedX = 0;}}      //snake cant move into the first 10 pieces of the tail directly
-  if(keyCode == DOWN) {  if(snake.ypos[1] != snake.ypos[0]+10){snake.speedY = 15; snake.speedX = 0;}}
-  if(keyCode == LEFT) { if(snake.xpos[1] != snake.xpos[0]-10){snake.speedX = -15; snake.speedY = 0;}}
-  if(keyCode == RIGHT) { if(snake.xpos[1] != snake.xpos[0]+10){snake.speedX = 15; snake.speedY = 0;}}
+  if(keyCode == UP) {  if(snake.ypos[1] != snake.ypos[0]-playerspeed){snake.speedY = -playerspeed; snake.speedX = 0;}}      //snake cant move into the first 10 pieces of the tail directly
+  if(keyCode == DOWN) {  if(snake.ypos[1] != snake.ypos[0]+playerspeed){snake.speedY = playerspeed; snake.speedX = 0;}}
+  if(keyCode == LEFT) { if(snake.xpos[1] != snake.xpos[0]-playerspeed){snake.speedX = -playerspeed; snake.speedY = 0;}}
+  if(keyCode == RIGHT) { if(snake.xpos[1] != snake.xpos[0]+playerspeed){snake.speedX = playerspeed; snake.speedY = 0;}}
 }
 
 //MENU BUTTON CONTROLS 
